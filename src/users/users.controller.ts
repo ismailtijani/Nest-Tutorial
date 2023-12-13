@@ -25,10 +25,10 @@ export class UsersController {
     return users;
   }
 
-  // @Get(':id')
-  // getUser(@Param('id') id: number) {
-  //   return this.userService.findUser(id);
-  // }
+  @Get(':id')
+  getUser(@Param('id') id: number) {
+    return this.userService.findUser(id);
+  }
 
   @Patch(':id')
   async updateUser(
