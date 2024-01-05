@@ -31,10 +31,12 @@ export class UsersService {
     return this.userRepository.findOneBy({ id });
   }
 
+  // Update User Profile
   updateUser(id: number, updateDetails: updateUserDto) {
     return this.userRepository.update({ id }, { ...updateDetails });
   }
 
+  // Delete User Account
   deleteUser(id: number) {
     return this.userRepository.delete({ id });
   }
