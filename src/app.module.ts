@@ -4,8 +4,8 @@ import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './typeorm/entities/User';
-import { Profile } from './typeorm/entities/Profile';
 import { ProfileModule } from './profile/profile.module';
+import { Profile } from './profile/entities/profile.entity';
 
 @Module({
   imports: [
@@ -18,6 +18,7 @@ import { ProfileModule } from './profile/profile.module';
       database: 'nest',
       entities: [User, Profile],
       synchronize: true,
+      // dropSchema: true,
     }),
     UsersModule,
     ProfileModule,

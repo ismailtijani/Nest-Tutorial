@@ -8,6 +8,7 @@ import {
   Patch,
   Post,
 } from '@nestjs/common';
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { createUserDto, updateUserDto } from './users.dto';
 import { UsersService } from './users.service';
 

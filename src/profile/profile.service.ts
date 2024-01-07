@@ -1,26 +1,53 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Profile } from './entities/profile.entity';
+import { Repository } from 'typeorm';
+import { User } from 'src/typeorm/entities/User';
+import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class ProfileService {
-  create(createProfileDto: CreateProfileDto) {
-    return 'This action adds a new profile';
+  constructor(
+    // Inject TypeORM repository into the service class to enable interaction with the database
+    @InjectRepository(Profile)
+    private userProfileRepository: Repository<Profile>,
+    @InjectRepository(User) private userRepository: Repository<User>
+    // @Inject(UsersService) private readonly userService: UsersService
+  ) {}
+
+  async createUserProfile(id: number, profileDetails: CreateProfileDto) {
+    const user = await this.userRepository.findOneBy({ id });
+    //Check if User Exist
+    // const user = await this.userService.findUser(id);
+    if (!user)
+      throw new HttpException(
+        'User not found, cannot create profile',
+        HttpStatus.BAD_REQUEST
+      );
+    // Create userProfile
+    const userProfile = this.userProfileRepository.create(profileDetails);
+    //Save userProfile
+    const savedProfile = await this.userProfileRepository.save(userProfile);
+    //Update User Account
+    user.profile = savedProfile;
+    return this.userRepository.save(user);
   }
 
-  findAll() {
-    return `This action returns all profile`;
+  getUserProfile(id: number) {
+    return this.userProfileRepository.findOneBy({ id });
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} profile`;
+  updateUserProfile(id: number, profileDetails: UpdateProfileDto) {
+    return this.userProfileRepository.update({ id }, { ...profileDetails });
   }
 
-  update(id: number, updateProfileDto: UpdateProfileDto) {
-    return `This action updates a #${id} profile`;
-  }
+  // findAll() {
+  //   return `This action returns all profile`;
+  // }
 
-  remove(id: number) {
-    return `This action removes a #${id} profile`;
-  }
+  // remove(id: number) {
+  //   return `This action removes a #${id} profile`;
+  // }
 }
