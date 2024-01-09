@@ -23,7 +23,7 @@ export class UsersService {
 
   //GET all users
   getUsers() {
-    return this.userRepository.find();
+    return this.userRepository.find({ relations: ['profile'] });
   }
 
   // GET a single User

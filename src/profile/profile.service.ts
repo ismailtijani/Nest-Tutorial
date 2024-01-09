@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateProfileDto } from './dto/create-profile.dto';
 import { UpdateProfileDto } from './dto/update-profile.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -18,8 +18,8 @@ export class ProfileService {
   ) {}
 
   async createUserProfile(id: number, profileDetails: CreateProfileDto) {
-    const user = await this.userRepository.findOneBy({ id });
     //Check if User Exist
+    const user = await this.userRepository.findOneBy({ id });
     // const user = await this.userService.findUser(id);
     if (!user)
       throw new HttpException(

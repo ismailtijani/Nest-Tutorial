@@ -6,6 +6,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './typeorm/entities/User';
 import { ProfileModule } from './profile/profile.module';
 import { Profile } from './profile/entities/profile.entity';
+import { Post } from './posts/entities/post.entity';
 
 @Module({
   imports: [
@@ -16,7 +17,7 @@ import { Profile } from './profile/entities/profile.entity';
       username: 'root',
       password: 'Isma!lt!jani1',
       database: 'nest',
-      entities: [User, Profile],
+      entities: [User, Profile, Post],
       synchronize: true,
       // dropSchema: true,
     }),
