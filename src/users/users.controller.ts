@@ -1,5 +1,6 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Delete,
   Get,
@@ -7,15 +8,21 @@ import {
   ParseIntPipe,
   Patch,
   Post,
+  UseInterceptors,
+  UsePipes,
+  ValidationPipe,
 } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { createUserDto, updateUserDto } from './users.dto';
 import { UsersService } from './users.service';
 
 @Controller('users')
+//Removing sensitive through serialization
+@UseInterceptors(ClassSerializerInterceptor)
 export class UsersController {
   constructor(private userService: UsersService) {}
   @Post()
+  @UsePipes(ValidationPipe)
   createUser(@Body() createUserDto: createUserDto) {
     this.userService.createUser(createUserDto);
   }

@@ -42,12 +42,4 @@ export class ProfileService {
   updateUserProfile(id: number, profileDetails: UpdateProfileDto) {
     return this.userProfileRepository.update({ id }, { ...profileDetails });
   }
-
-  // findAll() {
-  //   return `This action returns all profile`;
-  // }
-
-  // remove(id: number) {
-  //   return `This action removes a #${id} profile`;
-  // }
 }

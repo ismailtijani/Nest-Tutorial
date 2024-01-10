@@ -1,4 +1,5 @@
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { AddressDto } from '../dto/create-profile.dto';
 
 @Entity({ name: 'userprofile' })
 export class Profile {
@@ -11,6 +12,6 @@ export class Profile {
   @Column({ type: 'int' })
   age: number;
 
-  @Column()
-  address: string;
+  @Column({ type: 'json' })
+  address: AddressDto;
 }
