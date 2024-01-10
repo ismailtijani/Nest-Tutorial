@@ -7,6 +7,7 @@ import { User } from './typeorm/entities/User';
 import { ProfileModule } from './profile/profile.module';
 import { Profile } from './profile/entities/profile.entity';
 import { Post } from './posts/entities/post.entity';
+import { PostModule } from './posts/post.module';
 
 @Module({
   imports: [
@@ -23,6 +24,7 @@ import { Post } from './posts/entities/post.entity';
     }),
     UsersModule,
     ProfileModule,
+    PostModule,
   ],
   controllers: [AppController],
   providers: [AppService],

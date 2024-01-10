@@ -4,7 +4,7 @@ import { CreatePostDto } from './dto/post.dto';
 
 @Controller(':id/posts')
 export class PostController {
-  constructor(private postService: PostService) {}
+  constructor(private readonly postService: PostService) {}
 
   @Post()
   createPost(
