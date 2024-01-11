@@ -1,7 +1,10 @@
 import { Exclude, Expose } from 'class-transformer';
 import { Post } from 'src/posts/entities/post.entity';
 import { Profile } from 'src/profile/entities/profile.entity';
+import * as bcrypt from 'bcrypt';
+
 import {
+  BeforeInsert,
   Column,
   Entity,
   JoinColumn,
@@ -44,6 +47,12 @@ export class User {
 
   @OneToMany(() => Post, (post) => post.user)
   post: Post[];
+
+  //Hashing User plain text password before saving using Entity Listener
+  @BeforeInsert()
+  async hashPassword() {
+    this.password = await bcrypt.hash(this.password, 8);
+  }
 
   //Enabling Serialization (Removing sensitive datas)
   constructor(partial: Partial<User>) {
