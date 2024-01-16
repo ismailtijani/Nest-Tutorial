@@ -4,34 +4,38 @@ import {
   NestModule,
   RequestMethod,
 } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersModule } from './users/users.module';
-import { User } from './typeorm/entities/User';
 import { AuthMiddleware } from './middleware/auth';
 import { ProfileModule } from './profile/profile.module';
-import { Profile } from './profile/entities/profile.entity';
-import { Post } from './posts/entities/post.entity';
 import { PostModule } from './posts/post.module';
 import { UsersController } from './users/users.controller';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from './typeorm/entities/User';
+import { Profile } from './profile/entities/profile.entity';
+import { Post } from './posts/entities/post.entity';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, cache: true }),
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath:
+        process.env.NODE_ENV === 'production' ? '.prod.env' : '.dev.env',
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
-      useFactory: async (configService: ConfigService) => ({
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
         type: 'mysql',
-        host: configService.get('DATABASE_HOST'),
-        port: parseInt(configService.get('DATABASE_PORT')),
-        username: 'root',
-        password: 'Isma!lt!jani1',
+        host: configService.get<string>('DATABASE_HOST'),
+        port: configService.get<number>('DATABASE_PORT'),
+        username: configService.get<string>('DATABASE_USERNAME'),
+        password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
         entities: [User, Profile, Post],
         synchronize: true,
         // dropSchema: true,
       }),
-      inject: [ConfigService],
     }),
     UsersModule,
     ProfileModule,
