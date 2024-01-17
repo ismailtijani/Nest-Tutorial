@@ -4,6 +4,7 @@
 /.dev.env
 /.prod.env
 /.test.env
+.env
 
 # Logs
 logs
