@@ -3,13 +3,23 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import bcrypt from 'bcrypt';
 import { User } from 'src/typeorm/entities/User';
+import { CreateUserDto } from './dto/auth.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
+    // Inject TypeORM repository into the service class to enable interaction with the database
     @InjectRepository(User) private readonly userRepository: Repository<User>
   ) {}
-  createUser() {}
+
+  // Create User profile
+  createUser(userDetails: CreateUserDto) {
+    const newUser = this.userRepository.create({
+      ...userDetails,
+      createdAt: new Date(),
+    });
+    return this.userRepository.save(newUser);
+  }
 
   // Hasing user plain text password before saving
   //   private async hashedPassword(password: string) {

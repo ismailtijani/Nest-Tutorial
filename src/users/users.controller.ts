@@ -7,13 +7,10 @@ import {
   Param,
   ParseIntPipe,
   Patch,
-  Post,
   UseInterceptors,
-  UsePipes,
-  ValidationPipe,
 } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { createUserDto, updateUserDto } from './users.dto';
+import { updateUserDto } from './dto/users.dto';
 import { UsersService } from './users.service';
 
 @Controller('users')
@@ -21,11 +18,6 @@ import { UsersService } from './users.service';
 @UseInterceptors(ClassSerializerInterceptor)
 export class UsersController {
   constructor(private userService: UsersService) {}
-  @Post()
-  @UsePipes(ValidationPipe)
-  createUser(@Body() createUserDto: createUserDto) {
-    this.userService.createUser(createUserDto);
-  }
 
   @Get()
   async getUsers() {
