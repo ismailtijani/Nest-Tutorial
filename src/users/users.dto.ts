@@ -22,10 +22,3 @@ export class updateUserDto {
   @IsEmail()
   email: string;
 }
-
-export class LoginDto {
-  @IsEmail()
-  email: string;
-  @IsString()
-  password: string;
-}
