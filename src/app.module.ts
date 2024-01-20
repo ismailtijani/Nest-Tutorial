@@ -14,13 +14,16 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './typeorm/entities/User';
 import { Profile } from './profile/entities/profile.entity';
 import { Post } from './posts/entities/post.entity';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath:
-        process.env.NODE_ENV === 'production' ? '.prod.env' : '.dev.env',
+        process.env.NODE_ENV === 'production'
+          ? './env/.prod.env'
+          : './env/.dev.env',
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
@@ -37,6 +40,7 @@ import { Post } from './posts/entities/post.entity';
         // dropSchema: true,
       }),
     }),
+    AuthModule,
     UsersModule,
     ProfileModule,
     PostModule,
