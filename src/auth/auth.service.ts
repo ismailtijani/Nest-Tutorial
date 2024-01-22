@@ -1,10 +1,10 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import bcrypt from 'bcrypt';
-import { User } from 'src/typeorm/entities/User';
-import { CreateUserDto } from './dto/auth.dto';
+import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
+import { CreateUserDto, LoginDto } from './dto/auth.dto';
+import { User } from 'src/typeorm/entities/User';
 
 @Injectable()
 export class AuthService {
@@ -21,12 +21,19 @@ export class AuthService {
       ...userDetails,
       createdAt: new Date(),
     });
-    console.log(newUser);
-    // const token =
+    //Save user data to database
     const savedUser = await this.userRepository.save(newUser);
-    console.log(savedUser);
+    //JWT payload
     const payload = { sub: savedUser.id, username: savedUser.fullName };
+    return { accessToken: await this.jwtService.signAsync(payload) };
+  }
 
+  async login(loginDetails: LoginDto) {
+    const { email, password } = loginDetails;
+    // Validate User Credentials
+    const user = await this.validateUser(email, password);
+    //JWT payload
+    const payload = { sub: user.id, username: user.fullName };
     return { accessToken: await this.jwtService.signAsync(payload) };
   }
 
@@ -43,6 +50,10 @@ export class AuthService {
         'No Account with this credentials, kindly signup',
         HttpStatus.BAD_REQUEST
       );
+    console.log(password);
+    console.log(user);
+    console.log(user.password);
+
     //Compare user passwords
     const isMatch = await bcrypt.compare(password, user.password);
     if (!isMatch)
@@ -50,6 +61,7 @@ export class AuthService {
         'Email or Password is incorrect',
         HttpStatus.BAD_REQUEST
       );
+    console.log(isMatch);
     return user;
   }
 }

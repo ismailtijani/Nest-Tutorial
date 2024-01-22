@@ -40,8 +40,9 @@ export class ProfileController {
   }
 
   @Patch()
+  @UsePipes(ValidationPipe)
   updateUserProfile(
-    @Param('id') id: string,
+    @Param('id', ParseIntPipe) id: string,
     @Body() updateProfileDto: UpdateProfileDto
   ) {
     return this.profileService.updateUserProfile(+id, updateProfileDto);
