@@ -7,11 +7,13 @@ import {
   Param,
   ParseIntPipe,
   Patch,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { updateUserDto } from './dto/users.dto';
 import { UsersService } from './users.service';
+import { AuthGuard } from '@nestjs/passport';
 
 @Controller('users')
 //Removing sensitive through serialization
@@ -26,6 +28,7 @@ export class UsersController {
   }
 
   @Get(':id')
+  // @UseGuards(AuthGuard('local'))
   getUser(@Param('id', ParseIntPipe) id: number) {
     return this.userService.findUser(id);
   }

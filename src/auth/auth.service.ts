@@ -29,9 +29,8 @@ export class AuthService {
   }
 
   async login(loginDetails: LoginDto) {
-    const { email, password } = loginDetails;
     // Validate User Credentials
-    const user = await this.validateUser(email, password);
+    const user = await this.validateUser(loginDetails);
     //JWT payload
     const payload = { sub: user.id, username: user.fullName };
     return { accessToken: await this.jwtService.signAsync(payload) };
@@ -42,7 +41,7 @@ export class AuthService {
   //     return bcrypt.hash(password, 8);
   //   }
 
-  async validateUser(email: string, password: string) {
+  async validateUser({ email, password }: LoginDto) {
     //Check if User Exist
     const user = await this.userRepository.findOneBy({ email });
     if (!user)
