@@ -50,9 +50,6 @@ export class AuthService {
         'No Account with this credentials, kindly signup',
         HttpStatus.BAD_REQUEST
       );
-    console.log(password);
-    console.log(user);
-    console.log(user.password);
 
     //Compare user passwords
     const isMatch = await bcrypt.compare(password, user.password);
@@ -61,7 +58,6 @@ export class AuthService {
         'Email or Password is incorrect',
         HttpStatus.BAD_REQUEST
       );
-    console.log(isMatch);
     return user;
   }
 }
