@@ -8,11 +8,12 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { LocalStrategy } from './strategies/local.strategy';
 import { PassportModule } from '@nestjs/passport';
-// import { ConfigService } from '@nestjs/config';
+import { JwtStrategy } from './strategies/jwt.strategy';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([User]),
+    UsersModule,
     PassportModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
@@ -21,10 +22,8 @@ import { PassportModule } from '@nestjs/passport';
         secret: configService.get<string>('JWT_SECRET'),
       }),
     }),
-    UsersModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, LocalStrategy],
-  // exports: [LocalStrategy],
+  providers: [AuthService, LocalStrategy, JwtStrategy],
 })
 export class AuthModule {}

@@ -13,9 +13,10 @@ import {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { updateUserDto } from './dto/users.dto';
 import { UsersService } from './users.service';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtGuard } from 'src/auth/guards/jwt.guard';
 
 @Controller('users')
+// @UseGuards(JwtGuard)
 //Removing sensitive through serialization
 @UseInterceptors(ClassSerializerInterceptor)
 export class UsersController {
@@ -28,7 +29,6 @@ export class UsersController {
   }
 
   @Get(':id')
-  // @UseGuards(AuthGuard('local'))
   getUser(@Param('id', ParseIntPipe) id: number) {
     return this.userService.findUser(id);
   }

@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 
-console.log('Guard......');
+console.log('JWT Guard......');
 
 @Injectable()
-export class LocalGuard extends AuthGuard('local') {}
+export class JwtGuard extends AuthGuard('jwt') {}

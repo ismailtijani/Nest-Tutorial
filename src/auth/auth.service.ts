@@ -28,13 +28,10 @@ export class AuthService {
     return { accessToken: await this.jwtService.signAsync(payload) };
   }
 
-  async login(loginDetails: LoginDto) {
-    // Validate User Credentials
-    const user = await this.validateUser(loginDetails);
-    //JWT payload
-    const payload = { sub: user.id, username: user.fullName };
-    return { accessToken: await this.jwtService.signAsync(payload) };
-  }
+  // login(loginDetails: LoginDto) {
+  //   // Validate User Credentials
+  //   return this.validateUser(loginDetails);
+  // }
 
   // Hasing user plain text password before saving
   //   private async hashedPassword(password: string) {
@@ -42,6 +39,7 @@ export class AuthService {
   //   }
 
   async validateUser({ email, password }: LoginDto) {
+    console.log('Validating user....');
     //Check if User Exist
     const user = await this.userRepository.findOneBy({ email });
     if (!user)
@@ -57,6 +55,8 @@ export class AuthService {
         'Email or Password is incorrect',
         HttpStatus.BAD_REQUEST
       );
-    return user;
+    //JWT payload
+    const payload = { sub: user.id, username: user.fullName };
+    return { accessToken: await this.jwtService.signAsync(payload) };
   }
 }
