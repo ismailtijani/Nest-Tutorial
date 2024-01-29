@@ -28,10 +28,10 @@ export class AuthService {
     return { accessToken: await this.jwtService.signAsync(payload) };
   }
 
-  // login(loginDetails: LoginDto) {
-  //   // Validate User Credentials
-  //   return this.validateUser(loginDetails);
-  // }
+  login(loginDetails: LoginDto) {
+    // Validate User Credentials
+    return this.validateUser(loginDetails);
+  }
 
   // Hasing user plain text password before saving
   //   private async hashedPassword(password: string) {
