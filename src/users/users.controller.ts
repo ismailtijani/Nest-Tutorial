@@ -4,20 +4,16 @@ import {
   Controller,
   Delete,
   Get,
-  HttpException,
-  Param,
-  ParseIntPipe,
   Patch,
   Req,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-import { updateUserDto } from './dto/users.dto';
+// import { UpdateUserDto } from './dto/users.dto';
 import { UsersService } from './users.service';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { Request } from 'express';
-import { User } from 'src/typeorm/entities/User';
+import { UpdateUserDto } from './dto/users.dto';
 
 @Controller('users')
 @UseGuards(JwtGuard)
@@ -26,28 +22,24 @@ import { User } from 'src/typeorm/entities/User';
 export class UsersController {
   constructor(private userService: UsersService) {}
 
-  // @Get()
-  // async getUsers() {
-  //   const users = await this.userService.getUsers();
-  //   return users;
-  // }
+  @Get('all')
+  async getUsers() {
+    const users = await this.userService.getUsers();
+    return users;
+  }
 
   @Get()
   getUser(@Req() req: Request) {
-    const user = req.user as User;
-    return this.userService.findUser(user.id);
+    return this.userService.findUser(req.user.id);
   }
 
-  @Patch(':id')
-  async updateUser(
-    @Param('id', ParseIntPipe) id: number,
-    @Body() updateUserDto: updateUserDto
-  ) {
-    await this.userService.updateUser(id, updateUserDto);
+  @Patch()
+  async updateUser(@Req() req: Request, @Body() updateDetails: UpdateUserDto) {
+    await this.userService.updateUser(req.user.id, updateDetails);
   }
 
-  @Delete(':id')
-  async deleteUser(@Param('id', ParseIntPipe) id: number) {
-    await this.userService.deleteUser(id);
+  @Delete()
+  async deleteUser(@Req() req: Request) {
+    await this.userService.deleteUser(req.user.id);
   }
 }

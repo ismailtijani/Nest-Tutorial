@@ -20,9 +20,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: any) {
-    const user = await this.userRepository.findOneBy(payload.sub);
-    console.log(user);
+    const user = await this.userRepository.findOneBy({ id: payload.sub });
     if (!user) throw new HttpException('User not fund', HttpStatus.BAD_REQUEST);
-    return { id: user.id, ...user };
+    return user;
   }
 }
