@@ -9,11 +9,10 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-// import { UpdateUserDto } from './dto/users.dto';
 import { UsersService } from './users.service';
 import { JwtGuard } from 'src/auth/guards/jwt.guard';
 import { Request } from 'express';
-import { UpdateUserDto } from './dto/users.dto';
+import { updateUserDto } from './dto/users.dto';
 
 @Controller('users')
 @UseGuards(JwtGuard)
@@ -34,7 +33,7 @@ export class UsersController {
   }
 
   @Patch()
-  async updateUser(@Req() req: Request, @Body() updateDetails: UpdateUserDto) {
+  async updateUser(@Req() req: Request, @Body() updateDetails: updateUserDto) {
     await this.userService.updateUser(req.user.id, updateDetails);
   }
 
