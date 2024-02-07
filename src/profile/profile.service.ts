@@ -5,7 +5,6 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Profile } from './entities/profile.entity';
 import { Repository } from 'typeorm';
 import { User } from 'src/typeorm/entities/User';
-// import { UsersService } from 'src/users/users.service';
 
 @Injectable()
 export class ProfileService {
@@ -14,13 +13,11 @@ export class ProfileService {
     @InjectRepository(Profile)
     private userProfileRepository: Repository<Profile>,
     @InjectRepository(User) private userRepository: Repository<User>
-    // @Inject(UsersService) private readonly userService: UsersService
   ) {}
 
   async createUserProfile(id: number, profileDetails: CreateProfileDto) {
     //Check if User Exist
     const user = await this.userRepository.findOneBy({ id });
-    // const user = await this.userService.findUser(id);
     if (!user)
       throw new HttpException(
         'User not found, cannot create profile',

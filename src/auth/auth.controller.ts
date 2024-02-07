@@ -8,7 +8,7 @@ import {
   ValidationPipe,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { CreateUserDto, LoginDto } from './dto/auth.dto';
+import { CreateUserDto } from './dto/auth.dto';
 import { LocalGuard } from './guards/local.guard';
 import { Request } from 'express';
 
@@ -25,8 +25,6 @@ export class AuthController {
   @Post('login')
   @UseGuards(LocalGuard)
   login(@Req() req: Request) {
-    // console.log(loginDto);
     return req.user;
-    // return this.authService.login(loginDto);
   }
 }
